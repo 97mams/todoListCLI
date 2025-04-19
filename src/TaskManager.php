@@ -6,39 +6,33 @@ class TaskManager
 {
 
   private array $tasks;
-  private int $nextId;
+  private int | null $nextId;
   private string $taskStore = "./store/task.json";
 
   public function __construct()
   {
-    $this->nextId = $this->getLastTaskId();
     $this->tasks = $this->getTaskFile();
+    $this->nextId = $this->getLastTaskId();
   }
 
-  public function addTask(string $description):void
+  public function addTask(string $description)
   {
     $task = new Task($this->nextId, $description);
     $this->tasks[] = $task->create();
     $this->updateTaskFile($this->tasks);
 
     echo 'Ajout réussi ✅🚀';
-
+    return $this->getAllTasks();
   }
 
   public function getAllTasks()
   {
-    return $this->tasks;
-  }
-
-  /**
-   * check file exit and create file if not exit
-   * @return void
-   */
-  public function createTaskFileIfNotExit():void
-  {
-    if (file_exists($this->taskStore) || filesize($this->taskStore) === 0) {
-      file_put_contents($this->taskStore, json_encode([]));
+    $tasks = json_decode( json_encode($this->tasks),true);
+    echo "\n + task liste \n";
+    foreach ($tasks as $task) {
+      echo "\n # ".$task['id']." ". $task['description']." ". $task['status']." \n";
     }
+    return $this->tasks;
   }
 
   /**
@@ -48,8 +42,19 @@ class TaskManager
   public function getTaskFile()
   {
     $this->createTaskFileIfNotExit();
-    return json_decode(file_put_contents($this->taskStore, true));
+    return json_decode(file_get_contents($this->taskStore, true));
   }
+  
+  /**
+   * check file exit and create file if not exit
+   * @return void
+   */
+  public function createTaskFileIfNotExit():void
+  {
+    if (!file_exists($this->taskStore) || filesize($this->taskStore) === 0) {
+      file_put_contents($this->taskStore, json_encode([]));
+    }
+  } 
 
   /**
    * update file task store
@@ -87,8 +92,8 @@ class TaskManager
    */
   public function getLastTaskId():int | null
   {
-    $lastTask = end($this->tasks);
-    return $lastTask['id'] ?? null;
+    $lastTask = json_decode(json_encode(end($this->tasks)), true);
+    return $lastTask['id'] + 1  ?? null;
   }
 
 }
