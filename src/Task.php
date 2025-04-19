@@ -4,6 +4,7 @@ namespace App;
 
 class Task
 {
+  private string $status = "pending";
   private string $createdAt;
   private string $updatedAt;
 
@@ -26,6 +27,7 @@ class Task
     return [
       "id"          => $this->id,
       "description" => $this->description,
+      "status"      => $this->status,
       "createdAt"   => $this->createdAt,
       "updatedAt"   => $this->updatedAt
     ];
