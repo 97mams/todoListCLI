@@ -30,7 +30,7 @@ class TaskManager
     $tasks = json_decode( json_encode($this->tasks),true);
     echo "\n + task liste \n";
     foreach ($tasks as $task) {
-      echo "\n # ".$task['id']." ". $task['description']." ". $task['status']." \n";
+      echo "\n -> ".$task['id']." ". $task['description']." (status: ". $task['status'].") \n";
     }
     return $this->tasks;
   }
@@ -57,6 +57,24 @@ class TaskManager
     }
     $this->updateTaskFile($this->tasks);
     echo 'Modification réussi !';
+  }
+
+  /**
+   * deleted task by id
+   * @param string $id
+   * 
+   */
+  public function deleteTask(string $id): void
+  {
+    $tasks = json_decode(json_encode($this->tasks),true);
+    foreach ($tasks as $key => $task) {
+      if ($task['id'] === $id) {
+        unset($this->tasks[$key]);
+        $this->updateTaskFile($this->tasks);
+        exit;
+      }
+      echo "+ Tâche $id supprimer";
+    }
   }
 
   /**
