@@ -43,20 +43,22 @@ class TaskManager
    */
   public function updateTaskById(string $id, string $description):void
   {
-    $tasks = json_decode(json_encode($this->tasks),true);
-    $isValideId = $this->getValideId($id);
-    if ($isValideId === -1) {
-      echo 'vérifier le id';
-      return;
-    }
-    foreach ($tasks as $key => $task) {
-      if ($task['id'] === $id) {
-        $task['description'] = $description;
-        $this->tasks[$key]= $task;
-      }
-    }
-    $this->updateTaskFile($this->tasks);
+    $key = 'description';
+    $this->updateTaskFile($this->updatedTask($id, $description, $key));
     echo 'Modification réussi !';
+  }
+
+  /**
+   * update task by id
+   * @param string $id
+   * @param string $status
+   * @return void
+   */
+  public function updateTaskStatusById(string $id, string $status):void
+  {
+    $key = 'status';
+    $this->updateTaskFile($this->updatedTask($id, $status, $key));
+    echo 'Status à jour.';
   }
 
   /**
@@ -139,6 +141,32 @@ class TaskManager
       return 1;
     }
     return $lastTask['id'] + 1;
+  }
+
+
+  /**
+   * filter task by id and changed values 
+   * @param $id
+   * @param $value
+   * @param $key
+   * @return array Tasks
+   */
+  private function updatedTask(string $id, string $value, string $key):array
+  {
+    $tasks = json_decode(json_encode($this->tasks),true);
+    $isValideId = $this->getValideId($id);
+    if ($isValideId === -1) {
+      echo 'vérifier le id';
+      exit;
+    }
+    foreach ($tasks as $index => $task) {
+      if ($task['id'] === $id) {
+        $task[$key] = $value;
+        $this->tasks[$index]= $task;
+      }
+    }
+
+    return $this->tasks;
   }
 
 }
