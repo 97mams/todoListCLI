@@ -35,25 +35,27 @@ class TaskManager
     return $this->tasks;
   }
 
-  public function updateTaskById(string $id, string $description)
+  /**
+   * update task by id
+   * @param string $id
+   * @param string $description
+   * @return void
+   */
+  public function updateTaskById(string $id, string $description):void
   {
     $tasks = json_decode(json_encode($this->tasks),true);
     $isValideId = $this->getValideId($id);
     if ($isValideId === -1) {
+      echo 'vérifier le id';
       return;
     }
-    $id = 1;
     foreach ($tasks as $key => $task) {
       if ($task['id'] === $id) {
         $task['description'] = $description;
-        $tasks[$key]= $task;
-        exit;
+        $this->tasks[$key]= $task;
       }
     }
-
-    var_dump($tasks);
-
-    $this->updateTaskFile($tasks);
+    $this->updateTaskFile($this->tasks);
     echo 'Modification réussi !';
   }
 
