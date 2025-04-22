@@ -1,4 +1,4 @@
-#! /src/bin/env php
+#!/src/bin/env php
 <?php
 
 use App\TaskManager;
