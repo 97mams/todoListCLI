@@ -14,8 +14,8 @@ class Task
     private string $description,
   )
   {
-      $this->createdAt = date("y-m-d");
-      $this->updatedAt = date("y-m-d");
+      $this->createdAt = date("y-m-d", time());
+      $this->updatedAt = date("y-m-d", time());
   }
 
   /**
