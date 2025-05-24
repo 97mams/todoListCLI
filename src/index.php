@@ -1,4 +1,4 @@
-#!/src/bin/env php
+#!/usr/bin/php
 <?php
 
 use App\TaskManager;
@@ -17,5 +17,14 @@ match ($command) {
   "update"=> $taskManager->updateTaskById($arg1, $arg2),
   "update:status"=> $taskManager->updateTaskStatusById($arg1, $arg2),
   "delete"=> $taskManager->deleteTask($arg1),
-  default => print "❌ Invalid command"
+  default => doc()
 };
+
+function doc ():void
+{
+  echo "Liste commandes: \n";
+  echo "\033[32m add --------------------------- add new task. \033[0m\n";
+  echo "\033[32m list -------------------------- list all tasks. \033[0m\n";
+  echo "\033[32m update idTask ----------------- update task by id. \033[0m\n";
+  echo "\033[32m update:status idTask ---------- update status task. \033[0m\n";
+}
