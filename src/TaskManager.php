@@ -162,6 +162,7 @@ class TaskManager
     foreach ($tasks as $index => $task) {
       if ($task['id'] === $id) {
         $task[$key] = $value;
+        $task['updated_at'] = date('y-m-d', time());
         $this->tasks[$index]= $task;
       }
     }
