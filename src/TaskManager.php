@@ -21,7 +21,7 @@ class TaskManager
     $this->tasks[] = $task->create();
     $this->updateTaskFile($this->tasks);
 
-    echo 'Ajout réussi ✅🚀';
+    echo 'Ajout réussi ✔';
     return $this->getAllTasks();
   }
 
